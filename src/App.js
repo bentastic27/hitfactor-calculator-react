@@ -14,58 +14,83 @@ export default class App extends Component {
     this.changeTime = this.changeTime.bind(this);
   }
 
-  calculate = () => {
-    let points = 0;
-    points = this.state.Acount * 5
-    points = points + this.state.Ccount * 3
-    points = points + this.state.Dcount * 1
+  calculate = (a = null, c = null, d = null, time = null) => {
+    let points = 0
+    let hitFactor = 0.0
 
-    if (this.state.time > 0) {
-      this.setState({
-        hitFactor: points / this.state.time
-      })
+    if (a === null) {
+      points = points + this.state.Acount * 5
+    } else {
+      points = points + a * 5
     }
+
+    if (c === null) {
+      points = points + this.state.Ccount * 3
+    } else {
+      points = points + c * 3
+    }
+
+    if (d === null) {
+      points = points + this.state.Dcount * 1
+    } else {
+      points = points + d * 1
+    }
+
+    if (time === null) {
+      hitFactor = points / this.state.time
+    } else {
+      hitFactor = points / time
+    }
+
+    return hitFactor.toFixed(4)
   }
 
   AincrementCount = () => {
     this.setState({
-      Acount: this.state.Acount + 1
+      Acount: this.state.Acount + 1,
+      hitFactor: this.calculate(this.state.Acount + 1, null, null, null)
     });
   };
 
   AdecrementCount = () => {
     this.setState({
-      Acount: this.state.Acount - 1
+      Acount: this.state.Acount - 1,
+      hitFactor: this.calculate(this.state.Acount - 1, null, null, null)
     });
   };
 
   CincrementCount = () => {
     this.setState({
-      Ccount: this.state.Ccount + 1
+      Ccount: this.state.Ccount + 1,
+      hitFactor: this.calculate(null, this.state.Ccount + 1, null, null)
     });
   };
 
   CdecrementCount = () => {
     this.setState({
-      Ccount: this.state.Ccount - 1
+      Ccount: this.state.Ccount - 1,
+      hitFactor: this.calculate(null, this.state.Ccount - 1, null, null)
     });
   };
 
   DincrementCount = () => {
     this.setState({
-      Dcount: this.state.Dcount + 1
+      Dcount: this.state.Dcount + 1,
+      hitFactor: this.calculate(null, null, this.state.Dcount + 1, null)
     });
   };
 
   DdecrementCount = () => {
     this.setState({
-      Dcount: this.state.Dcount - 1
+      Dcount: this.state.Dcount - 1,
+      hitFactor: this.calculate(null, null, this.state.Dcount - 1, null)
     });
   };
 
   changeTime = (event) => {
     this.setState({
-      time: event.target.value
+      time: event.target.value,
+      hitFactor: this.calculate(null, null, null, event.target.value)
     })
   }
 
@@ -105,9 +130,6 @@ export default class App extends Component {
                 value={this.state.time}
                 onChange={this.changeTime}
               />
-            </p>
-            <p>
-              <button onClick={this.calculate}>calculate</button>
             </p>
           </div>
         </div>
